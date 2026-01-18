@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    border: none;
     box-sizing: border-box;
 }
 
@@ -12,8 +13,23 @@ body {
 
 header {
     background-color: #222;
+    text-align: center;
     color: white;
-    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+header .nav-btn {
+    background-color: lightgreen;
+    padding: 15px 30px;
+}
+header .nav-btn:hover {
+    background-color: lightblue;
+}
+header .text {
+    font-size: 24px;
+    width: 250px;
+    padding: 10px 0;
 }
 
 nav ul {
