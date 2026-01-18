@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>SB Doc site</title>
+</head>
+<body>
+    <main>
+        <h1>
+            Hallo Welt
+        </h1>
+        <ul></ul>
+    </main>
+    <script>
+        fetch("https://api.hypixel.net/skyblock/bazaar")
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+
+                //console.log(typeof data.products.ABSOLUTE_ENDER_PEARL);
+                //console.log(data.products["ABSOLUTE_ENDER_PEARL"]);
+
+                document.querySelector("ul").textContent = "Ref Dia: " + (data.products.REFINED_DIAMOND.quick_status.buyPrice - data.products.ENCHANTED_DIAMOND_BLOCK.quick_status.sellPrice*2);
+
+                for (const productKey in data.products) {
+                    const product = data.products[productKey];
+                    const li = document.createElement("li");
+                    li.textContent = `${productKey}: Buy Price - ${product.quick_status.buyPrice}, Sell Price - ${product.quick_status.sellPrice}`;
+                    document.querySelector("ul").appendChild(li);
+                }
+            });
+    </script>
+</body>
+</html>
