@@ -7,12 +7,11 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #16171f;
     color: #333;
 }
 
 header {
-    background-color: #222;
     text-align: center;
     color: white;
     display: flex;
@@ -52,4 +51,20 @@ footer {
     padding: 10px;
     background-color: #ddd;
     margin-top: 20px;
+}
+
+div .calc-button {
+    background-color: rgb(71, 71, 71);
+    color: white;
+    background-blend-mode: lighten;
+    margin: 15px;
+    font-size: 20px;
+    flex: 25%;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+}
+div .calc-button:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.8);
+    top: -5px;
 }
