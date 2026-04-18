@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div style="position: sticky; top: 1px;" id="header"></div>
+    <div class="container">
+    <!-- SIDEBAR -->
+        <div class="sidebar" style="position: sticky;">
+            <div class="sidebar-header">
+                <p class="sidebar-kicker">Navigation</p>
+                <h2 class="sidebar-title">Profit Calculators</h2>
+            </div>
+            <button class="sidebar-buttons" data-page="forge-profit" type="button" onclick="location.href='/Pages/forge-profit.html'">Forge Profit</button>
+            <button class="sidebar-buttons" data-page="garden-profit" type="button" onclick="location.href='/Pages/garden-profit.html'">Garden Profit</button>
+        </div>
+        
+        <!-- MAIN PAGE -->
+        <main>
+            
+        </main>
+    </div>
+</body>
+</html>
+<script>
+    fetch("/header.html")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("header").innerHTML = data;
+            const currentSection = "profit";
+            document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
+                button.classList.toggle("nav-btn-active", button.dataset.section === currentSection);
+            });
+        });
+
+    const currentPage = window.location.pathname.split("/").pop().replace(".html", "");
+    document.querySelectorAll(".sidebar-buttons[data-page]").forEach(button => {
+        button.classList.toggle("sidebar-buttons-active", button.dataset.page === currentPage);
+    });
+</script>
