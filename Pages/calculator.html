@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../style.css">
     <title>Document</title>
 </head>
 <body>
@@ -12,8 +12,8 @@
         <!-- SIDEBAR -->
         <div class="sidebar" style="position: sticky;">
             <h2 style="color: white; text-align: center;">Profit Calculators</h2>
-            <button class="sidebar-buttons" type="button" onclick="location.href='/Pages/forge-profit.html'">Forge Profit</button>
-            <button class="sidebar-buttons" type="button" onclick="location.href='/Pages/garden-profit.html'">Garden Profit</button>
+            <button class="sidebar-buttons" type="button" onclick="location.href='./forge-profit.html'">Forge Profit</button>
+            <button class="sidebar-buttons" type="button" onclick="location.href='./garden-profit.html'">Garden Profit</button>
         </div>
 
         <!-- MAIN PAGE -->
@@ -28,7 +28,7 @@
 </body>
 </html>
 <script>
-    fetch("/header.html")
+    fetch("../header.html")
         .then(res => res.text())
         .then(data => {
             document.getElementById("header").innerHTML = data;
