@@ -7,32 +7,24 @@
     <title>SB Doc site</title>
 </head>
 <body>
-    <div id="header"></div>
-    <script>
-    fetch("header.html")
-        .then(res => res.text())
-        .then(data => {
-            document.getElementById("header").innerHTML = data;
-            });
-    </script>
+    <div style="position: sticky; top: 1px;" id="header"></div>
     <main>
         <div style="margin-bottom: 50px;">
             <h1 style="color: white; text-align: center;">SkyBlock Helper</h1>
             <p style="color: white; text-align: center;">Helper site for SkyBlock Calculators and other tools.</p>
         </div>
-        <div style="text-align: center;">
-            <h2  style="color: white;">Calculators</h2>
-            <div style="display: flex; background-color: #313131; width: 50%; height: 250px; border-radius: 10px; margin: auto;">
-                <button class="calc-button" type="button" onclick="location.href='forge.html'">Forge Calculator
-                    <p style="font-size: 12px; margin-top: 5px; color: darkgray;">Calculate the resources needed to make a SkyBlock Forge.</p>
-                </button>
-                <button class="calc-button" type="button" onclick="alert('dike niga')">Soon</button>
-                <button class="calc-button" type="button" onclick="alert('dike niga')">Soon</button>
-                <button class="calc-button" type="button" onclick="alert('dike niga')">Soon</button>
-            </div>
-        </div>
-        
     </main>
     
 </body>
 </html>
+<script>
+    fetch("/header.html")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("header").innerHTML = data;
+            const currentSection = "main";
+            document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
+                button.classList.toggle("nav-btn-active", button.dataset.section === currentSection);
+            });
+        });
+</script>

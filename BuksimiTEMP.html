@@ -16,7 +16,7 @@
     </main>
     <script>
         (async () => {
-            var itemSum = await APIGet("ENCHANTED_DIAMOND_BLOCK");
+            var itemSum = await APIGetBazaar("ENCHANTED_DIAMOND_BLOCK");
             console.log(itemSum);
 
             document.querySelector("ul").textContent = itemSum.buyPrice;

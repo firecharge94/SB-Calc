@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div style="position: sticky; top: 1px;" id="header"></div> <!-- HEADER -->
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar" style="position: sticky;">
+            <h2 style="color: white; text-align: center;">Profit Calculators</h2>
+            <button class="sidebar-buttons" type="button" onclick="location.href='/Pages/forge-profit.html'">Forge Profit</button>
+            <button class="sidebar-buttons" type="button" onclick="location.href='/Pages/garden-profit.html'">Garden Profit</button>
+        </div>
+
+        <!-- MAIN PAGE -->
+        <main>
+            <h1 style="text-align: center; color: white;margin-bottom: 50px;">Calculators</h1>
+            <div style="display: flex; background-color: #313131; width: 60%; height: 265px; border-radius: 10px; margin: auto;">
+                <a class="container-title">test</a>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+<script>
+    fetch("/header.html")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("header").innerHTML = data;
+            const currentSection = "calculator";
+            document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
+                button.classList.toggle("nav-btn-active", button.dataset.section === currentSection);
+            });
+        });
+</script>

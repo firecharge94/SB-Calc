@@ -7,28 +7,159 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #16171f;
+    background:
+        radial-gradient(circle at top, rgba(83, 175, 93, 0.12), transparent 22%),
+        linear-gradient(180deg, #14161d 0%, #101218 100%);
     color: #333;
 }
 
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
 header {
-    text-align: center;
     color: white;
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 30;
 }
+
+.site-header {
+    padding: 16px 24px;
+    margin: 14px 14px 0;
+    border-radius: 18px;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
+        rgba(22, 26, 33, 0.9);
+    border: 1px solid rgba(118, 130, 145, 0.16);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(12px);
+}
+
+.site-header-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.site-header-kicker {
+    color: #7ecb84;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+}
+
+.site-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 header .nav-btn {
-    background-color: lightgreen;
-    padding: 15px 30px;
+    background: linear-gradient(135deg, #2d3643, #212834);
+    padding: 11px 16px;
+    border: 1px solid rgba(96, 108, 122, 0.84);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
+
 header .nav-btn:hover {
-    background-color: lightblue;
+    background: linear-gradient(135deg, #3b4655, #27303d);
+    border-color: rgba(126, 201, 132, 0.36);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
 }
+
+header .nav-btn-active {
+    background: linear-gradient(135deg, #4CAF50, #2f7d32);
+    border-color: #69c96d;
+    box-shadow: 0 14px 28px rgba(76, 175, 80, 0.22);
+}
+
 header .text {
-    font-size: 24px;
+    font-size: 28px;
+    width: auto;
+    padding: 0;
+    color: white;
+    letter-spacing: 0.02em;
+}
+
+.sidebar {
     width: 250px;
-    padding: 10px 0;
+    min-width: 250px;
+    height: calc(100vh - 92px);
+    margin: 18px 0 18px 18px;
+    padding: 22px 18px;
+    display: flex;
+    gap: 10px;
+    position: sticky;
+    top: 92px;
+    align-self: flex-start;
+    flex-direction: column;
+    border: 1px solid rgba(116, 128, 143, 0.14);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at top left, rgba(76, 175, 80, 0.14), transparent 34%),
+        linear-gradient(180deg, rgba(27, 31, 39, 0.96), rgba(18, 22, 29, 0.98));
+    box-shadow: 0 24px 44px rgba(0, 0, 0, 0.24);
+}
+
+.sidebar-header {
+    padding: 6px 8px 14px;
+}
+
+.sidebar-kicker {
+    color: #7ecb84;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 8px;
+}
+
+.sidebar-title {
+    color: white;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.sidebar-buttons {
+    background: linear-gradient(135deg, #27303c, #1d242f);
+    padding: 14px 16px;
+    border: 1px solid rgba(90, 104, 120, 0.84);
+    border-radius: 14px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    text-align: left;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.sidebar-buttons:hover {
+    background: linear-gradient(135deg, #324050, #222a35);
+    border-color: rgba(126, 201, 132, 0.34);
+    transform: translateX(2px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.18);
+}
+
+.sidebar-buttons-active {
+    background: linear-gradient(135deg, #4CAF50, #2f7d32);
+    border-color: #69c96d;
+    box-shadow: 0 14px 28px rgba(76, 175, 80, 0.22);
+}
+.sidebar-buttons-active:hover {
+    background: linear-gradient(135deg, #4CAF50, #2f7d32);
+    border-color: #69c96d;
+    box-shadow: 0 14px 28px rgba(76, 175, 80, 0.22);
+    transform: translateX(2px);
 }
 
 nav ul {
@@ -43,7 +174,21 @@ nav a {
 }
 
 main {
-    padding: 20px;
+    padding: 28px 30px;
+    flex: 1;
+    top: 60px;
+}
+
+a {
+    color: rgb(165, 164, 164);
+    text-decoration: none;
+    padding: 15px;
+}
+
+a.container-title {
+    color: rgb(165, 164, 164);
+    text-decoration: none;
+    padding: 15px;
 }
 
 footer {
@@ -53,7 +198,7 @@ footer {
     margin-top: 20px;
 }
 
-div .calc-button {
+.button-profit {
     background-color: rgb(71, 71, 71);
     color: white;
     background-blend-mode: lighten;
@@ -64,7 +209,366 @@ div .calc-button {
     border-radius: 5px;
     position: relative;
 }
-div .calc-button:hover {
+.button-profit:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.8);
     top: -5px;
+}
+
+.research-tabel {
+    color: rgb(192, 198, 204);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.forge-page-heading {
+    margin: 0 auto 28px;
+    max-width: 980px;
+    text-align: center;
+}
+
+.forge-page-eyebrow {
+    color: #7ecb84;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.forge-page-title {
+    color: white;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1;
+    margin-bottom: 14px;
+}
+
+.forge-page-subtitle {
+    max-width: 720px;
+    margin: 0 auto;
+    color: #98a0aa;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.forge-layout-card {
+    display: flex;
+    gap: 14px;
+    min-height: 520px;
+    padding: 14px;
+    border-radius: 24px;
+    flex-direction: row;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)),
+        rgba(28, 31, 39, 0.92);
+    border: 1px solid rgba(115, 126, 141, 0.16);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(10px);
+}
+
+.forge-controls-card {
+    width: 30%;
+    min-width: 250px;
+    padding: 24px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at top left, rgba(76, 175, 80, 0.24), transparent 35%),
+        linear-gradient(180deg, #242933 0%, #1a1f28 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border: 1px solid rgba(132, 146, 163, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.forge-controls-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.forge-panel-kicker {
+    color: #7ecb84;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+}
+
+.forge-controls-title {
+    color: white;
+    font-size: 28px;
+    letter-spacing: 0.04em;
+}
+
+.forge-action-button,
+.forge-control-input {
+    background-color: #272727;
+    padding: 12px 14px;
+    border: 1px solid rgba(85, 97, 112, 0.85);
+    border-radius: 12px;
+    font-size: 15px;
+    color: white;
+}
+
+.forge-action-button {
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forge-action-button:hover {
+    background-color: #4CAF50;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(76, 175, 80, 0.2);
+}
+
+.forge-refresh-button {
+    font-weight: 700;
+    background: linear-gradient(135deg, #3d4655, #28303d);
+}
+
+.forge-top-controls {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 12px;
+}
+
+.forge-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: rgb(215, 215, 215);
+}
+
+.forge-control-pill,
+.forge-checkbox-card {
+    padding: 14px;
+    border: 1px solid rgba(95, 108, 123, 0.85);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(19, 23, 30, 0.82), rgba(15, 18, 24, 0.92));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.forge-control-pill span,
+.forge-checkbox-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(191, 191, 191);
+}
+
+.forge-control-input {
+    margin-top: 6px;
+    width: 100%;
+    background-color: #151922;
+}
+
+.forge-checkbox-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+}
+
+.forge-checkbox-card input {
+    width: 22px;
+    height: 22px;
+    accent-color: #4CAF50;
+    align-self: flex-start;
+    margin-top: 12px;
+}
+
+.forge-sort-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.forge-sort-button,
+.forge-smart-button {
+    border: 1px solid rgba(87, 100, 115, 0.85);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2c3441, #202632);
+    color: white;
+    padding: 13px 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.forge-sort-button:hover,
+.forge-smart-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(76, 175, 80, 0.9);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+}
+
+.forge-sort-button.active,
+.forge-smart-button.active {
+    background: linear-gradient(135deg, #4CAF50, #2f7d32);
+    border-color: #69c96d;
+    box-shadow: 0 14px 28px rgba(76, 175, 80, 0.25);
+}
+
+.forge-smart-button {
+    width: 100%;
+    padding: 16px 12px;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    background: linear-gradient(135deg, #3c474f, #283138);
+}
+
+.profit-table-card {
+    flex-grow: 1;
+    background: linear-gradient(180deg, #171b22 0%, #12161c 100%);
+    border-radius: 18px;
+    border: 1px solid rgba(120, 131, 146, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.profit-table-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.profit-table-header,
+.profit-table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    text-align: center;
+}
+
+.profit-table-header {
+    background: linear-gradient(180deg, #252d38 0%, #202631 100%);
+    min-height: 64px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(115, 127, 144, 0.14);
+}
+
+.profit-table-header .research-tabel:not(:last-child),
+.profit-table-row div:not(:last-child) {
+    border-right: 1px solid rgba(115, 127, 144, 0.1);
+}
+
+.profit-table-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px;
+}
+
+.profit-table-row {
+    min-height: 64px;
+    color: white;
+    background: linear-gradient(180deg, rgba(31, 36, 45, 0.9), rgba(24, 28, 35, 0.95));
+    border: 1px solid rgba(110, 123, 139, 0.08);
+    border-radius: 14px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.profit-table-row:nth-child(even) {
+    background: linear-gradient(180deg, rgba(35, 40, 50, 0.92), rgba(26, 30, 38, 0.96));
+}
+.profit-table-row:hover {
+    background: linear-gradient(180deg, rgba(41, 47, 58, 0.98), rgba(30, 35, 43, 1));
+    border-color: rgba(126, 201, 132, 0.24);
+    transform: translateY(-1px);
+}
+
+.profit-table-row div {
+    padding: 16px 12px;
+}
+
+.profit-item-name {
+    color: white;
+    font-weight: bold;
+}
+
+.profit-item-meta {
+    color: rgb(175, 175, 175);
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.profit-positive {
+    color: #68d391;
+    font-weight: bold;
+}
+
+.profit-negative {
+    color: #fc8181;
+    font-weight: bold;
+}
+
+.profit-table-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.profit-table-body::-webkit-scrollbar-track {
+    background: #12161d;
+}
+
+.profit-table-body::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 10px;
+}
+
+@media (max-width: 980px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .site-header {
+        margin: 10px 10px 0;
+    }
+
+    .sidebar {
+        width: auto;
+        height: auto;
+        margin: 12px 10px 0;
+        top: 12px;
+    }
+
+    .forge-layout-card {
+        flex-direction: column;
+    }
+
+    .forge-controls-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .site-header {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .site-header-nav {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    main {
+        padding: 20px 14px;
+    }
+
+    .forge-top-controls,
+    .forge-sort-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profit-table-header,
+    .profit-table-row {
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        font-size: 13px;
+    }
 }
