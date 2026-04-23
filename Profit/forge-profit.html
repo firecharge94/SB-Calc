@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
     <script src="../funcAPIGet.js"></script>
-    <title>Document</title>
+    <title>Forge Profit</title>
 </head>
 <body>
     <div style="position: sticky; top: 1px;" id="header"></div>
@@ -35,6 +35,18 @@
                     </div>
                     <button class="forge-action-button forge-refresh-button" type="button" id="refresh-button">Refresh</button>
                     <div class="forge-top-controls">
+                        <label class="forge-control-group forge-control-pill" for="slot-count-select">
+                            <span>Slots Used</span>
+                            <select id="slot-count-select" class="forge-control-input">
+                                <option value="1">1 Slot</option>
+                                <option value="2">2 Slots</option>
+                                <option value="3">3 Slots</option>
+                                <option value="4">4 Slots</option>
+                                <option value="5">5 Slots</option>
+                                <option value="6">6 Slots</option>
+                                <option value="7" selected>7 Slots</option>
+                            </select>
+                        </label>
                         <label class="forge-control-group forge-control-pill" for="hotm-select">
                             <span>HOTM Level</span>
                             <select id="hotm-select" class="forge-control-input">
@@ -57,7 +69,7 @@
                     </div>
                     <div class="forge-sort-grid">
                         <button class="forge-sort-button" type="button" data-sort="time">Shortest</button>
-                        <button class="forge-sort-button" type="button" data-sort="cost">Cheapest</button>
+                        <button class="forge-sort-button" type="button" data-sort="money-hour">Money/Hour</button>
                         <button class="forge-sort-button active" type="button" data-sort="profit">Profit</button>
                     </div>
                     <button class="forge-smart-button" type="button" data-sort="smartest">Smartest</button>
@@ -67,8 +79,9 @@
                     <div class="profit-table-header">
                         <div class="research-tabel">Item</div>
                         <div class="research-tabel">Time</div>
-                        <div class="research-tabel">Cost</div>
                         <div class="research-tabel">Profit</div>
+                        <div class="research-tabel">Money/Hour</div>
+                        <div class="research-tabel">Sell Orders</div>
                     </div>
                     <div class="profit-table-body" id="profit-table">
                         
@@ -77,6 +90,47 @@
                 </div>
             </div>
         </main>
+    </div>
+    <div class="forge-modal-overlay" id="forge-item-modal" hidden>
+        <div class="forge-modal-card">
+            <button class="forge-modal-close" type="button" id="forge-modal-close" aria-label="Close item details">x</button>
+            <p class="forge-modal-kicker">Forge Item</p>
+            <h2 class="forge-modal-title" id="forge-modal-title">Item Details</h2>
+            <div class="forge-modal-stats">
+                <div class="forge-modal-stat">
+                    <span>Slots</span>
+                    <strong id="forge-modal-slots">-</strong>
+                </div>
+                <div class="forge-modal-stat">
+                    <span>HOTM</span>
+                    <strong id="forge-modal-hotm">-</strong>
+                </div>
+                <div class="forge-modal-stat">
+                    <span>Time</span>
+                    <strong id="forge-modal-time">-</strong>
+                </div>
+                <div class="forge-modal-stat">
+                    <span>Profit</span>
+                    <strong id="forge-modal-profit">-</strong>
+                </div>
+                <div class="forge-modal-stat">
+                    <span>Money/Hour</span>
+                    <strong id="forge-modal-money-hour">-</strong>
+                </div>
+            </div>
+            <div class="forge-modal-grid">
+                <div class="forge-modal-panel">
+                    <p class="forge-modal-panel-title">Market</p>
+                    <p id="forge-modal-sell-price">Sell Price: -</p>
+                    <p id="forge-modal-sell-orders">Sell Orders: -</p>
+                    <p id="forge-modal-cost">Craft Cost: -</p>
+                </div>
+                <div class="forge-modal-panel">
+                    <p class="forge-modal-panel-title">Ingredients</p>
+                    <div id="forge-modal-ingredients"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
@@ -140,8 +194,20 @@
     ];
 
     document.getElementById("refresh-button").addEventListener("click", () => ForgeTable(true));
+    document.getElementById("slot-count-select").addEventListener("change", () => ForgeTable());
     document.getElementById("hotm-select").addEventListener("change", () => ForgeTable());
     document.getElementById("quick-forge-toggle").addEventListener("change", () => ForgeTable());
+    document.getElementById("forge-modal-close").addEventListener("click", closeForgeItemDetails);
+    document.getElementById("forge-item-modal").addEventListener("click", event => {
+        if (event.target.id === "forge-item-modal") {
+            closeForgeItemDetails();
+        }
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeForgeItemDetails();
+        }
+    });
     document.querySelectorAll("[data-sort]").forEach(button => {
         button.addEventListener("click", () => setForgeSort(button.dataset.sort));
     });
