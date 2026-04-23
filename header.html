@@ -4,8 +4,8 @@
         <h2 class="text">Skyblock Calculator</h2>
     </div>
     <div class="site-header-nav">
-        <button class="nav-btn" data-section="main" type="button" onclick="location.href = window.location.pathname.includes('/Pages/') ? '../index.html' : './index.html'">Main</button>
-        <button class="nav-btn" data-section="calculator" type="button" onclick="location.href = window.location.pathname.includes('/Pages/') ? './calculator.html' : './Pages/calculator.html'">Calculator</button>
-        <button class="nav-btn" data-section="profit" type="button" onclick="location.href = window.location.pathname.includes('/Pages/') ? './profit.html' : './Pages/profit.html'">Profit</button>
+        <button class="nav-btn" data-section="main" type="button" onclick="location.href = (window.location.pathname.includes('/Pages/') || window.location.pathname.includes('/Profit/')) ? '../index.html' : './index.html'">Main</button>
+        <button class="nav-btn" data-section="calculator" type="button" onclick="location.href = (window.location.pathname.includes('/Pages/') || window.location.pathname.includes('/Profit/')) ? '../Pages/calculator.html' : './Pages/calculator.html'">Calculator</button>
+        <button class="nav-btn" data-section="profit" type="button" onclick="location.href = (window.location.pathname.includes('/Pages/') || window.location.pathname.includes('/Profit/')) ? '../Pages/profit.html' : './Pages/profit.html'">Profit</button>
     </div>
 </header>

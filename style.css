@@ -327,7 +327,7 @@ footer {
 
 .forge-top-controls {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 }
 
@@ -437,7 +437,7 @@ footer {
 .profit-table-header,
 .profit-table-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     align-items: center;
     text-align: center;
 }
@@ -468,6 +468,7 @@ footer {
     border-radius: 14px;
     margin-bottom: 8px;
     overflow: hidden;
+    cursor: pointer;
     transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
 }
 
@@ -482,6 +483,11 @@ footer {
 
 .profit-table-row div {
     padding: 16px 12px;
+}
+
+.profit-table-row:focus-visible {
+    outline: 2px solid #68d391;
+    outline-offset: 2px;
 }
 
 .profit-item-name {
@@ -517,6 +523,108 @@ footer {
 .profit-table-body::-webkit-scrollbar-thumb {
     background: #4CAF50;
     border-radius: 10px;
+}
+
+.forge-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 11, 16, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1000;
+    backdrop-filter: blur(6px);
+}
+
+.forge-modal-overlay[hidden] {
+    display: none !important;
+}
+
+.forge-modal-card {
+    width: min(720px, 100%);
+    background: linear-gradient(180deg, #1d2430 0%, #121821 100%);
+    border: 1px solid rgba(116, 130, 148, 0.2);
+    border-radius: 20px;
+    padding: 26px;
+    position: relative;
+    color: white;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.forge-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid rgba(118, 131, 148, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.forge-modal-kicker {
+    margin: 0 0 6px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #93a4b8;
+}
+
+.forge-modal-title {
+    margin: 0 0 20px;
+    font-size: 30px;
+}
+
+.forge-modal-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.forge-modal-stat,
+.forge-modal-panel {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(119, 132, 149, 0.14);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.forge-modal-stat span {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9aacbf;
+    margin-bottom: 8px;
+}
+
+.forge-modal-stat strong {
+    font-size: 18px;
+}
+
+.forge-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.forge-modal-panel-title {
+    margin: 0 0 10px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9aacbf;
+}
+
+#forge-modal-ingredients p,
+.forge-modal-panel p {
+    margin: 0 0 8px;
+    line-height: 1.45;
 }
 
 @media (max-width: 980px) {
@@ -568,7 +676,12 @@ footer {
 
     .profit-table-header,
     .profit-table-row {
-        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
         font-size: 13px;
+    }
+
+    .forge-modal-stats,
+    .forge-modal-grid {
+        grid-template-columns: 1fr;
     }
 }

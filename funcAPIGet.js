@@ -1,5 +1,6 @@
 let bazaarProductsCache = null;
 let currentForgeSort = "profit";
+let latestForgeItems = [];
 
 async function getBazaarProducts(forceRefresh = false) {
     if (!forceRefresh && bazaarProductsCache) {
@@ -14,14 +15,27 @@ async function getBazaarProducts(forceRefresh = false) {
 
 async function APIGetBazaar(itemID, forceRefresh = false) {
     const products = await getBazaarProducts(forceRefresh);
-    return products[itemID]?.quick_status ?? null;
+    const product = products[itemID];
+
+    if (!product?.quick_status) {
+        return null;
+    }
+
+    const highestBuyOrder = product.buy_summary?.[0]?.pricePerUnit ?? null;
+
+    return {
+        ...product.quick_status,
+        calculatedSellPrice: highestBuyOrder !== null ? highestBuyOrder - 0.1 : product.quick_status.sellPrice
+    };
 }
 
 async function ForgeTable(forceRefresh = false) {
     const result = [];
     const profitTable = document.getElementById("profit-table");
+    const slotCountSelect = document.getElementById("slot-count-select");
     const hotmSelect = document.getElementById("hotm-select");
     const quickForgeToggle = document.getElementById("quick-forge-toggle");
+    const selectedSlots = Number(slotCountSelect?.value ?? 7);
     const selectedHotm = Number(hotmSelect?.value ?? 0);
     const useQuickForge = quickForgeToggle?.checked ?? false;
 
@@ -39,30 +53,51 @@ async function ForgeTable(forceRefresh = false) {
             continue;
         }
 
-        const profit = finalItem.sellPrice - cost;
+        const scaledCost = cost * selectedSlots;
+        const scaledSellPrice = finalItem.calculatedSellPrice * selectedSlots;
+        const profit = scaledSellPrice - scaledCost;
         const displayedTime = useQuickForge ? recipe.timeInMinutes * 0.7 : recipe.timeInMinutes;
 
         result.push({
             itemID: recipe.itemID,
+            slotsUsed: selectedSlots,
+            HOTM: recipe.HOTM,
             timeInMinutes: displayedTime,
-            cost: cost,
+            baseTimeInMinutes: recipe.timeInMinutes,
+            cost: scaledCost,
+            sellPrice: scaledSellPrice,
+            buyOrders: finalItem.buyOrders,
+            sellOrders: finalItem.sellOrders,
             profit: profit,
             profitPerHour: displayedTime > 0 ? profit / (displayedTime / 60) : profit,
+            ingredients: recipe.ingredients,
             profitClass: profit < 0 ? "red" : "green"
         });
     }
     sortForgeResults(result);
+    latestForgeItems = result;
 
     for (const item of result) {
         profitTable.innerHTML += `
-            <div class="profit-table-row">
+            <div class="profit-table-row" data-item-id="${item.itemID}" tabindex="0" role="button" aria-label="Open details for ${formatItemName(item.itemID)}">
                 <div>${formatItemName(item.itemID)}</div>
                 <div>${TijdInHour(item.timeInMinutes)}</div>
-                <div>${formatNumber(item.cost)}</div>
                 <div style="color: ${item.profitClass}">${formatNumber(item.profit)}</div>
+                <div style="color: ${item.profitClass}">${formatNumber(item.profitPerHour)}</div>
+                <div>${formatNumber(item.sellOrders)}</div>
             </div>
         `;
     }
+
+    document.querySelectorAll(".profit-table-row[data-item-id]").forEach(row => {
+        row.addEventListener("click", () => openForgeItemDetails(row.dataset.itemId));
+        row.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openForgeItemDetails(row.dataset.itemId);
+            }
+        });
+    });
 }
 
 function sortForgeResults(result) {
@@ -71,17 +106,33 @@ function sortForgeResults(result) {
         return;
     }
 
-    if (currentForgeSort === "cost") {
-        result.sort((a, b) => a.cost - b.cost);
-        return;
-    }
-
-    if (currentForgeSort === "smartest") {
+    if (currentForgeSort === "money-hour") {
         result.sort((a, b) => b.profitPerHour - a.profitPerHour);
         return;
     }
 
+    if (currentForgeSort === "smartest") {
+        applySmartestRanking(result);
+        return;
+    }
+
     result.sort((a, b) => b.profit - a.profit);
+}
+
+function applySmartestRanking(result) {
+    const maxProfit = Math.max(...result.map(item => Math.max(item.profit, 0)), 1);
+    const maxProfitPerHour = Math.max(...result.map(item => Math.max(item.profitPerHour, 0)), 1);
+    const maxBuyOrders = Math.max(...result.map(item => item.buyOrders), 1);
+
+    result.sort((a, b) => getSmartScore(b, maxProfit, maxProfitPerHour, maxBuyOrders) - getSmartScore(a, maxProfit, maxProfitPerHour, maxBuyOrders));
+}
+
+function getSmartScore(item, maxProfit, maxProfitPerHour, maxBuyOrders) {
+    const profitScore = (Math.max(item.profit, 0) / maxProfit) * 45;
+    const moneyHourScore = (Math.max(item.profitPerHour, 0) / maxProfitPerHour) * 35;
+    const buyOrdersScore = (Math.max(item.buyOrders, 0) / maxBuyOrders) * 20;
+
+    return profitScore + moneyHourScore + buyOrdersScore;
 }
 
 function setForgeSort(sortType) {
@@ -95,6 +146,41 @@ function updateSortButtons() {
         button.classList.toggle("active", button.dataset.sort === currentForgeSort);
     });
 }
+
+function openForgeItemDetails(itemID) {
+    const item = latestForgeItems.find(entry => entry.itemID === itemID);
+    const modal = document.getElementById("forge-item-modal");
+
+    if (!item || !modal) {
+        return;
+    }
+
+    document.getElementById("forge-modal-title").textContent = formatItemName(item.itemID);
+    document.getElementById("forge-modal-slots").textContent = `${item.slotsUsed}`;
+    document.getElementById("forge-modal-hotm").textContent = `HOTM ${item.HOTM}`;
+    document.getElementById("forge-modal-time").textContent = TijdInHour(item.timeInMinutes);
+    document.getElementById("forge-modal-profit").textContent = formatCoins(item.profit);
+    document.getElementById("forge-modal-profit").style.color = item.profit < 0 ? "#fc8181" : "#68d391";
+    document.getElementById("forge-modal-money-hour").textContent = formatCoins(item.profitPerHour);
+    document.getElementById("forge-modal-money-hour").style.color = item.profit < 0 ? "#fc8181" : "#68d391";
+    document.getElementById("forge-modal-sell-price").textContent = `Sell Price: ${formatCoins(item.sellPrice)}`;
+    document.getElementById("forge-modal-sell-orders").textContent = `Sell Orders: ${formatNumber(item.sellOrders)}`;
+    document.getElementById("forge-modal-cost").textContent = `Craft Cost: ${formatCoins(item.cost)}`;
+    document.getElementById("forge-modal-ingredients").innerHTML = item.ingredients
+        .map(ingredient => `<p>${ingredient.quantity * item.slotsUsed}x ${formatItemName(ingredient.itemID)}</p>`)
+        .join("");
+
+    modal.hidden = false;
+}
+
+function closeForgeItemDetails() {
+    const modal = document.getElementById("forge-item-modal");
+
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
 async function getRecipeCost(recipe, forceRefresh = false) {
     let totalCost = 0;
 
@@ -111,7 +197,7 @@ async function getRecipeCost(recipe, forceRefresh = false) {
 
 function TijdInHour(minutes) {
     const hour = Math.floor(minutes / 60);
-    const min = minutes % 60;
+    const min = Math.floor(minutes % 60);
 
     if (hour === 0) {
         return `${min}m`;
@@ -136,6 +222,10 @@ function formatNumber(value) {
     }
 
     return `${Math.round(value)}`;
+}
+
+function formatCoins(value) {
+    return `${formatNumber(value)} coins`;
 }
 
 function formatItemName(name) {
