@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
+    <script src="../funcAPIGetSkin.js"></script>
     <script src="../funcAPIGet.js"></script>
     <title>Forge Profit</title>
 </head>
@@ -29,50 +30,64 @@
             </div>
             <div class="forge-layout-card">
                 <div class="forge-controls-card">
-                    <div class="forge-controls-header">
-                        <p class="forge-panel-kicker">Control Panel</p>
-                        <h3 class="forge-controls-title">Forge Settings</h3>
+                    <div class="forge-controls-topbar">
+                        <div class="forge-controls-header">
+                            <p class="forge-panel-kicker">Control Panel</p>
+                            <h3 class="forge-controls-title">Forge Settings</h3>
+                        </div>
+                        <button class="forge-action-button forge-refresh-button" type="button" id="refresh-button">Refresh</button>
                     </div>
-                    <button class="forge-action-button forge-refresh-button" type="button" id="refresh-button">Refresh</button>
-                    <div class="forge-top-controls">
-                        <label class="forge-control-group forge-control-pill" for="slot-count-select">
-                            <span>Slots Used</span>
-                            <select id="slot-count-select" class="forge-control-input">
-                                <option value="1">1 Slot</option>
-                                <option value="2">2 Slots</option>
-                                <option value="3">3 Slots</option>
-                                <option value="4">4 Slots</option>
-                                <option value="5">5 Slots</option>
-                                <option value="6">6 Slots</option>
-                                <option value="7" selected>7 Slots</option>
-                            </select>
-                        </label>
-                        <label class="forge-control-group forge-control-pill" for="hotm-select">
-                            <span>HOTM Level</span>
-                            <select id="hotm-select" class="forge-control-input">
-                                <option value="1">HOTM 1</option>
-                                <option value="2">HOTM 2</option>
-                                <option value="3">HOTM 3</option>
-                                <option value="4">HOTM 4</option>
-                                <option value="5">HOTM 5</option>
-                                <option value="6">HOTM 6</option>
-                                <option value="7" selected>HOTM 7</option>
-                                <option value="8">HOTM 8</option>
-                                <option value="9">HOTM 9</option>
-                                <option value="10">HOTM 10</option>
-                            </select>
-                        </label>
-                        <label class="forge-checkbox-card" for="quick-forge-toggle">
-                            <span class="forge-checkbox-label">Quick Forge</span>
-                            <input type="checkbox" id="quick-forge-toggle">
-                        </label>
+                    <div class="forge-settings-section">
+                        <p class="forge-section-label">Filters</p>
+                        <div class="forge-top-controls">
+                            <label class="forge-control-group forge-control-pill" for="slot-count-select">
+                                <span>Slots Used</span>
+                                <select id="slot-count-select" class="forge-control-input">
+                                    <option value="1">1 Slot</option>
+                                    <option value="2">2 Slots</option>
+                                    <option value="3">3 Slots</option>
+                                    <option value="4">4 Slots</option>
+                                    <option value="5">5 Slots</option>
+                                    <option value="6">6 Slots</option>
+                                    <option value="7" selected>7 Slots</option>
+                                </select>
+                            </label>
+                            <label class="forge-control-group forge-control-pill" for="hotm-select">
+                                <span>HOTM Level</span>
+                                <select id="hotm-select" class="forge-control-input">
+                                    <option value="1">HOTM 1</option>
+                                    <option value="2">HOTM 2</option>
+                                    <option value="3">HOTM 3</option>
+                                    <option value="4">HOTM 4</option>
+                                    <option value="5">HOTM 5</option>
+                                    <option value="6">HOTM 6</option>
+                                    <option value="7" selected>HOTM 7</option>
+                                    <option value="8">HOTM 8</option>
+                                    <option value="9">HOTM 9</option>
+                                    <option value="10">HOTM 10</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="forge-toggle-grid">
+                            <label class="forge-checkbox-card" for="quick-forge-toggle">
+                                <span class="forge-checkbox-label">Quick Forge</span>
+                                <input type="checkbox" id="quick-forge-toggle">
+                            </label>
+                            <label class="forge-checkbox-card" for="buy-resources-toggle">
+                                <span class="forge-checkbox-label">Buy Resources</span>
+                                <input type="checkbox" id="buy-resources-toggle" checked>
+                            </label>
+                        </div>
                     </div>
-                    <div class="forge-sort-grid">
-                        <button class="forge-sort-button" type="button" data-sort="time">Shortest</button>
-                        <button class="forge-sort-button" type="button" data-sort="money-hour">Money/Hour</button>
-                        <button class="forge-sort-button active" type="button" data-sort="profit">Profit</button>
+                    <div class="forge-settings-section">
+                        <p class="forge-section-label">Sorting</p>
+                        <div class="forge-sort-grid">
+                            <button class="forge-sort-button" type="button" data-sort="time">Shortest</button>
+                            <button class="forge-sort-button" type="button" data-sort="money-hour">Money/Hour</button>
+                            <button class="forge-sort-button active" type="button" data-sort="profit">Profit</button>
+                        </div>
+                        <button class="forge-smart-button" type="button" data-sort="smartest">Smartest</button>
                     </div>
-                    <button class="forge-smart-button" type="button" data-sort="smartest">Smartest</button>
                 </div>
                 <div class="profit-table-card">
                     <div class="profit-table-shell">
@@ -191,12 +206,45 @@
                 { itemID: "ENCHANTED_UMBER", quantity: 160 }
             ]
         },
+        {
+            itemID: "PERFECT_ONYX_GEM",
+            HOTM: 5,
+            timeInMinutes: 1200,
+            ingredients: [
+                { itemID: "FLAWLESS_ONYX_GEM", quantity: 5 }
+            ]
+        },
+        {
+            itemID: "PERFECT_CITRINE_GEM",
+            HOTM: 5,
+            timeInMinutes: 1200,
+            ingredients: [
+                { itemID: "FLAWLESS_CITRINE_GEM", quantity: 5 }
+            ]
+        },
+        {
+            itemID: "PERFECT_PERIDOT_GEM",
+            HOTM: 5,
+            timeInMinutes: 1200,
+            ingredients: [
+                { itemID: "FLAWLESS_PERIDOT_GEM", quantity: 5 }
+            ]
+        },
+        {
+            itemID: "PERFECT_AQUAMARINE_GEM",
+            HOTM: 5,
+            timeInMinutes: 1200,
+            ingredients: [
+                { itemID: "FLAWLESS_AQUAMARINE_GEM", quantity: 5 }
+            ]
+        },
     ];
 
     document.getElementById("refresh-button").addEventListener("click", () => ForgeTable(true));
     document.getElementById("slot-count-select").addEventListener("change", () => ForgeTable());
     document.getElementById("hotm-select").addEventListener("change", () => ForgeTable());
     document.getElementById("quick-forge-toggle").addEventListener("change", () => ForgeTable());
+    document.getElementById("buy-resources-toggle").addEventListener("change", () => ForgeTable());
     document.getElementById("forge-modal-close").addEventListener("click", closeForgeItemDetails);
     document.getElementById("forge-item-modal").addEventListener("click", event => {
         if (event.target.id === "forge-item-modal") {
