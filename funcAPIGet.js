@@ -35,9 +35,12 @@ async function ForgeTable(forceRefresh = false) {
     const slotCountSelect = document.getElementById("slot-count-select");
     const hotmSelect = document.getElementById("hotm-select");
     const quickForgeToggle = document.getElementById("quick-forge-toggle");
+    const buyResourcesToggle = document.getElementById("buy-resources-toggle");
     const selectedSlots = Number(slotCountSelect?.value ?? 7);
     const selectedHotm = Number(hotmSelect?.value ?? 0);
     const useQuickForge = quickForgeToggle?.checked ?? false;
+    const useBuyPriceForResources = buyResourcesToggle?.checked ?? true;
+    const skyblockItems = await getSkyblockItems(forceRefresh);
 
     profitTable.innerHTML = "";
 
@@ -47,7 +50,7 @@ async function ForgeTable(forceRefresh = false) {
         }
 
         const finalItem = await APIGetBazaar(recipe.itemID, forceRefresh);
-        const cost = await getRecipeCost(recipe, forceRefresh);
+        const cost = await getRecipeCost(recipe, forceRefresh, useBuyPriceForResources);
 
         if (!finalItem || cost === null) {
             continue;
@@ -60,6 +63,7 @@ async function ForgeTable(forceRefresh = false) {
 
         result.push({
             itemID: recipe.itemID,
+            iconUrl: getItemIconUrl(skyblockItems[recipe.itemID]),
             slotsUsed: selectedSlots,
             HOTM: recipe.HOTM,
             timeInMinutes: displayedTime,
@@ -71,6 +75,7 @@ async function ForgeTable(forceRefresh = false) {
             profit: profit,
             profitPerHour: displayedTime > 0 ? profit / (displayedTime / 60) : profit,
             ingredients: recipe.ingredients,
+            ingredientPricingMode: useBuyPriceForResources ? "Instant Buy" : "Owned Resources",
             profitClass: profit < 0 ? "red" : "green"
         });
     }
@@ -80,7 +85,10 @@ async function ForgeTable(forceRefresh = false) {
     for (const item of result) {
         profitTable.innerHTML += `
             <div class="profit-table-row" data-item-id="${item.itemID}" tabindex="0" role="button" aria-label="Open details for ${formatItemName(item.itemID)}">
-                <div>${formatItemName(item.itemID)}</div>
+                <div class="profit-item-cell">
+                    ${getItemIconMarkup(item)}
+                    <span class="profit-item-name">${formatItemName(item.itemID)}</span>
+                </div>
                 <div>${TijdInHour(item.timeInMinutes)}</div>
                 <div style="color: ${item.profitClass}">${formatNumber(item.profit)}</div>
                 <div style="color: ${item.profitClass}">${formatNumber(item.profitPerHour)}</div>
@@ -165,7 +173,7 @@ function openForgeItemDetails(itemID) {
     document.getElementById("forge-modal-money-hour").style.color = item.profit < 0 ? "#fc8181" : "#68d391";
     document.getElementById("forge-modal-sell-price").textContent = `Sell Price: ${formatCoins(item.sellPrice)}`;
     document.getElementById("forge-modal-sell-orders").textContent = `Sell Orders: ${formatNumber(item.sellOrders)}`;
-    document.getElementById("forge-modal-cost").textContent = `Craft Cost: ${formatCoins(item.cost)}`;
+    document.getElementById("forge-modal-cost").textContent = `Craft Cost (${item.ingredientPricingMode}): ${formatCoins(item.cost)}`;
     document.getElementById("forge-modal-ingredients").innerHTML = item.ingredients
         .map(ingredient => `<p>${ingredient.quantity * item.slotsUsed}x ${formatItemName(ingredient.itemID)}</p>`)
         .join("");
@@ -181,7 +189,11 @@ function closeForgeItemDetails() {
     }
 }
 
-async function getRecipeCost(recipe, forceRefresh = false) {
+async function getRecipeCost(recipe, forceRefresh = false, useBuyPriceForResources = true) {
+    if (!useBuyPriceForResources) {
+        return 0;
+    }
+
     let totalCost = 0;
 
     for (const ingredient of recipe.ingredients) {
@@ -189,7 +201,7 @@ async function getRecipeCost(recipe, forceRefresh = false) {
         if (!data) {
             return null;
         }
-        totalCost += data.buyPrice * ingredient.quantity;
+        totalCost += data.sellPrice * ingredient.quantity;
     }
 
     return totalCost;
